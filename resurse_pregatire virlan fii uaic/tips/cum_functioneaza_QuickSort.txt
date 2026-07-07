@@ -1,0 +1,63 @@
+
+  Alegem prima oara un pivot si il mutam pe ultima pozitie in vector.
+  
+  Aleg doi pointeri: unul (a) il setez pe prima pozitie, al doilea (b) pe penultima 
+  (pe ultima aflandu-se pivotul - pe care deocamdata il ignor)
+  
+  * 
+  Merg cu "a" spre dreapta pana gasesc un prim element mai mare decat pivotu
+  Merg cu "b" spre stanga pana gasesc un prim element mai mic decat pivotul
+
+  5 3 7 1 8 0 2 9 6      4
+  a           b          p
+  
+  interscimb elementele de pe pozitiile a si b si reiau de la *
+
+  2 3 7 1 8 0 5 9 6      4
+      a     b            p
+
+  2 3 0 1 8 7 5 9 6      4
+        b a              p
+  
+  schimb a cu p. si voi sti ca 4 (care era pivot se afla EXACT PE POZITIA
+  IN CARE SE VA AFLA IN SORTAREA FINALA; toate elementele din stanga lui 
+  sunt mai mici decat el si toate elemetele din dreapta lui sunt mai mari
+  decat el)
+  
+  2 3 0 1 4 7 5 9 6 8
+  
+  Apelez recursiv pentru vectorul aflat in stanga pivotului (lui 4) (2,3,0,1)
+  Apelez recursiv pentru vectorul aflat in dreapta pivotului (lui 4) (7,5,6,9,8)
+  
+  
+  
+  
+   O a doua metoda este sa tin un pointer pe primul element mai mare si 
+   sa il incrementez de fiecare data cand gasesc un element mai mic decat
+   pivotul si il interschimb cu acest pointer (numit wall/perete):
+  
+   5 3 7 1 8 0 2 9 6     4
+   w
+   
+   for i=1..n-2
+   
+   5 3 7 1 8 0 2 9 6     4
+   w i
+   deoarece v[i]<v[n-1] schimb v[perete] cu v[i] si incrementez peretele 
+   
+   3 5 7 1 8 0 2 9 6     4   
+     w   i
+   deoarece v[i]<v[n-1] schimb v[perete] cu v[i] si incrementez peretele      
+   
+   3 1 7 5 8 0 2 9 6     4   
+       w     i
+  deoarece v[i]<v[n-1] schimb v[perete] cu v[i] si incrementez peretele     
+   
+   3 1 0 5 8 7 2 9 6     4  
+         w     i
+  deoarece v[i]<v[n-1] schimb v[perete] cu v[i] si incrementez peretele 
+   
+   3 1 0 2 8 7 5 9 6     4    
+           w       i   
+   i a ajuns la final, atunci trebuie schimbat elementul de pe v[perete] cu v[pivot] 
+         

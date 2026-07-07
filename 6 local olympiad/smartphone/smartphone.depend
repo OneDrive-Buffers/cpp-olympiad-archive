@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1770384904 source:c:\users\dragos\onedrive\coding c++\6 local olympiad\smartphone\main.cpp
+	<iostream>
+	<fstream>
+

@@ -1,0 +1,47 @@
+Pentru a putea cauta in timp logaritmic intr-un sir de elemente, trebuie 
+ca acestea sa fie sortate. In cautarea binara, se incearca gasirea elementului
+cautat pe pozitia din mijloc al sirului. Daca elementul nu este gasit, putem
+sa comparam valoarea din mijloc cu cea cautata. Din cauza ca sirul este sortat,
+daca aceasta valoare este mai mare decat elementul cautat inseamna ca acesta
+are sanse sa fie in partea stanga a sirului (in prima jumatate). In caz ca
+acest mijloc este mai mic decat elementul cautat, probabil ca elementul pe care
+il dorim va fi in cea de-a doua jumatate.
+
+Intervalul de cautare se injumatateste astfel (de la n la n/2). Noul sir (prima
+sau a doua jumatate) are si el un mijloc. Se reia procesul de mai sus si se cauta
+in aceasta jumatate si apoi iarasi se imparte intervalul cautat -> n/4 urmeaza
+n/8, n/16 etc. 
+
+Din cauza acestei injumatatiri, complexitatea algoritmului este una logaritmica,
+mai exact logaritm in baza 2. Daca problema s-ar fi dublat de fiecare data
+atunci ea ar fi fost exponentiala. Cum ea se injumatateste, functia inversa 
+celei exponentiale este logaritmica - de aici si complexitatea.
+
+Pentru implementare putem considera doi pointeri: unul in stanga (ce indica
+marginea din stanga a intervalului in care facem cautarea) si unul in dreapta
+(a carui utilitate este evidenta). Asadar, daca elementul cautat este mai mic
+ca mijlocul inseamna ca vom muta pointerul de dreapta cu o pozitie mai in 
+stanga decat acest mijloc si vom relua procesul. 
+
+Functia de cautare binara ar putea fi urmatoarea:
+
+
+int cauta(int v[], int n, int x)
+{
+    int s=0, d=n-1;
+    while (s<=d)
+    {
+        if(v[(s+d)/2]<x) s=(s+d)/2+1;
+        else d=(s+d)/2-1;
+    }
+    return s;
+}
+
+Aceasta functie nu returneaza insa daca elementul a fost gasit sau nu ci doar 
+pozitia pe care acesta ar fi daca intr-adevar exista. Daca vreti sa returnati
+existenta elementului atunci inlocuiti return s; cu:
+
+return (v[s]==x);
+
+
+

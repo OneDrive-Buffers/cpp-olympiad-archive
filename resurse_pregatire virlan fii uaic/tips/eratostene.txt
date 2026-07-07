@@ -1,0 +1,161 @@
+Ciurul lui Eratostene
+
+Ne ajuta de fiecare data cand avem de testat daca foarte numere sunt numere prime.
+Ciurul lui Eratostene poate fi construit in doua moduri: Modul clasic este sa gasim
+un numar prim X si apoi sa taiem toate numerele dintr-un sir de car initializat
+cu 1 pe acel numar. In final vom avea in vectorul car cu valoarea 1 doar 
+pozitiile numerelor prime.
+
+void eratostene(int car[],int n) //ciur cu 1 si 0 (1 pentru pozitiile prime, 0 pentru pozitiile neprime)
+{
+    car[0]=0;
+    car[1]=0;
+    for(int i=2; i<n; i++)
+       car[i]=1;
+    int i=2;
+    while(i*i<=n)
+    {
+       while (car[i]==0) i++; // cautam urmatorul numar prim.
+       for(int j=i*2; j<n; j+=i)
+       {
+          car[j]=0; // setam toti multiplii lui a[i] care era numarul prim pe 0
+       }
+       i++;
+    }
+}
+// acum vectorul caracteristic (car) are 1 doar pe pozitiile in care numerele sunt prime
+
+
+
+
+Urmatorul nu este ciurul lui eratostene dar imi memoreaza numere prime pe pozitii consecutive:
+cautarea se face in log(n) - cu cautare binara, dar avantajul este ca imi tine minte mai multe
+numere prime decat ciurul:
+
+void lista_prime(int p[],int n) 
+{
+    p[0]=2;
+    int k=1, poz=1;
+    while(poz<n)
+    {
+        k+=2;
+        // acum vom testa daca k este prim:
+        int prim=1;
+        for(int i=0; i<poz && i*i<k && prim; i++)
+        {
+            if (k%p[i]==0) // am gasit un divizor (prim)
+            {
+                prim=0;
+            }
+        }
+        if (prim){ // daca nu am gasit nici un divizor atunci il adaugam
+            p[poz++]=k;
+        }
+    }
+}
+
+
+
+
+
+
+
+Varianta cu bitset a ciurului lui eratostene poate sa imi memoreze mai multe valori - apana la 30M. In acest exemplu sunt 5M:
+
+#include <iostream>
+#include <bitset>
+
+using namespace std;
+
+bitset <5000001> prime;
+void eratostene() //ciur cu 1 si 0 (1 pentru pozitiile prime, 0 pentru pozitiile neprime)
+{
+    int n=5000000;
+    prime[0]=0;
+    prime[1]=0;
+    for(int i=2; i<n; i++)
+       prime[i]=1;
+    int i=2;
+    while(i*i<=n)
+    {
+       while (prime[i]==0) i++; // cautam urmatorul numar prim.
+       for(int j=i*2; j<n; j+=i)
+       {
+          prime[j]=0; // setam toti multiplii lui a[i] care era numarul prim pe 0
+       }
+       i++;
+    }
+}
+
+
+
+int main()
+{
+    eratostene();
+
+    //..........
+    return 0;
+}
+
+
+
+Varianta care se foloseste de biti, dar fara sa foloseasca bitset ci un vector de unsigned int:
+#include <iostream>
+
+
+using namespace std;
+
+unsigned int prime[160000];
+
+int getBit(unsigned int vect[], int bit){
+    return (vect[bit/32]>>(bit - 32 * (bit/32)))%2;
+}
+void setBit(unsigned int vect[], int bit, int val){
+    if (getBit(vect, bit) != val)
+        vect[bit/32] ^= (1<<(bit - 32 * (bit/32)));
+}
+
+void eratostene() //ciur cu 1 si 0 (1 pentru pozitiile prime, 0 pentru pozitiile neprime)
+{
+    int n=5000000;
+
+    for(int i=0; i<160000; i++)
+        prime[i] = 4294967295;   /// ca sa pun toti bitii pe 1
+
+    setBit(prime, 0, 0);    ///  prime[0]=0;
+    setBit(prime, 1, 0);    ///  prime[1]=0;
+
+    int i=2;
+    while(i*i<=n)
+    {
+       while (getBit(prime, i)==0) i++; // cautam urmatorul numar prim.
+       for(int j=i*2; j<n; j+=i)
+       {
+          setBit(prime, j, 0);
+       }
+       i++;
+    }
+}
+
+
+int main()
+{
+    eratostene();
+
+    /*
+    unsigned int x[2];
+    x[0]=0;
+    x[1]=7;
+    setBit(x, 55, 1);
+    setBit(x, 33, 0);
+    for(int i=0; i<64; i++)
+        cout << i << ' ' << getBit(x,i) << endl;
+    */
+
+    for(int i=0; i<64; i++)
+        cout << i << ' ' << getBit(prime,i) << endl;
+
+    if (getBit(prime, x)) cout << x << " este numar prim.";
+
+    return 0;
+}

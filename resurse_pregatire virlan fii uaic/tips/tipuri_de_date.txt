@@ -1,0 +1,126 @@
+Tipuri de date
+
+La nivel electric/electronic, memoria calculatoarelor este realizata din tranzistori. Fara sa intram in 
+detalii cum sunt acestia construiti (ca idee sunt molecule de siliciu) putem spune ca tranzistorii se 
+comporta ca si intrerupatoare ce pot lua valoarea 0 sau 1 si in functie de valoarea pe care o au, permit
+sau nu trecerea curentului electric. O celula de memorie care poate lua una din aceste doua valori se 
+numeste un bit. 
+
+Un bit poate lua valoarea 0 sau 1 si atata tot. Cum putem reprezenta valori mai mari in cazul acesta ?
+Destul de simplu: daca avem doi biti, combinatiile de 0 si 1 pe care acestia le pot lua sunt: 
+00, 01, 10, 11. Avand 4 combinatii distincte, putem sa le si asociem cate o valoare: 
+00 - 0
+01 - 1
+10 - 2
+11 - 3
+
+Pasionatii de matematica (si in special de capitolul de sisteme de numeratie) si-au dat seama deja ca 
+sistemul de numeratie descris este sistemul binar - cel in baza 2. Si pentru ca este atat de important
+in domeniul calculatoarelor acest sistem de numeratie, vom intra in detalii asupra lui intr-o sectiune 
+urmatoare. In aceasta sectiune vom vedea cum se transforma un numar din baza 10 (cea cu care lucram
+noi, oamenii) in baza 2 precum si transformarea inversa.
+
+Deocamdata am observat ca prin utilizarea a doi biti putem reprezenta numere de la 0 la 3 (4 valori).
+Daca adaugam un al treilea bit puteti sa va dati seama cate valori vom putea reprezenta ? 
+
+Daca raspunsul vostru a fost sapte, atunci ati raspuns corect. Valorile ce le putem reprezenta pe 3 biti
+sunt: 000, 001, 010, 011, 100, 101, 110, 111 (de la 0 la 7). Puteti observa cu usurinta ca adaugand inca
+un bit am dublat numarul valorilor ce au putut fi reprezentate. Daca adaugam un al patrulea bit vom putea
+reprezenta 16 valori (de la 0 la 15). 
+
+Ca si standard, se considera grupari nu de 2 sau 3 biti ci de 8 biti. O astfel de grupare de 8 biti se 
+numeste byte (sau in romaneste octet). Valorile ce pot fi reprezentate pe un octet sunt intre 0 si 255,
+adica 2 la puterea a 8-a = 256 de valori.
+
+In informatica totusi ar fi nevoie sa lucram cu valori mai mari de 255. Din acest motiv exista tipuri 
+de date care sunt pe mai multi biti (de exemplu tipul int care este pe 32 de biti si poate reprezenta
+2 la puterea 32 valori (vom scrie 2^32) sau tipul long long care este pe 64 de biti si in care se pot
+reprezenta 2^64 valori. Valorile ce pot fi reprezentate in aceste tipuri nu sunt totusi intre 0 si 
+valoarea maxima ci mai degraba intre -2^(nrBiti-1) si 2^(nrBiti-1)-1. De exemplu, daca ne gandim la 
+tipul char (care este pe 8 biti - adica pe un byte), intervalul este [-2^7..2^7-1] adica [-128..127].
+La fel se intampla cu tipul int care poate reprezenta valori intre [-2147483648..2147483647]. Nu 
+trebuie sa retineti exact aceste intervale, mai degraba trebuie sa tineti minte aproximativ; de 
+exemplu, ar fi bine sa memorati ca ce este peste 2 miliarde nu prea mai incape in tipul int. Tipul
+long long poate retine orice numar din intervalul [-9223372036854775808..9223372036854775807].
+
+Atunci cand este declarata o variabila de tip int, calculatorul cauta un loc in memoria RAM un loc in
+care se gasesc 4 octeti consecutivi care nu sunt folositi de alt program. Asociaza variabilei declarate
+cei 4 octeti si toate valorile pe care le dati variabilei vor fi de fapt stocate in cei 4 octeti ce
+i-au fost alocati. In mod similar, daca se declara o variabila de tip long long, se vor gasi 8 octeti
+liberi ce vor fi asociati variabilei.
+
+Atunci cand declaram o variabila de un anumit tip, trebuie sa avem grija sa nu asociem acelei variabile
+valori care sa nu fie din intervalul ce poate fi stocat in acel tip. De exemplu, daca vom face o variabila
+de tipul int si ii dam o valoare mai mare decat cea care poate fi reprezentata, valoarea variabilei va 
+"da pe afara" si se va duce in celalalt capat al intervalului. Programul nu va afisa nici o eroare, dar
+rezultatul va fi cu siguranta gresit. Iata un exemplu in acest sens:
+
+
+#include <iostream>
+using namespace std;
+int main()
+{
+    int v=2147483647;
+    v = v+1;
+    cout << v << endl; // din cauza ca 2147483647+1 este mai mult decat incape in int, v va fi -21...8
+    return 0;
+}
+
+
+Desi este prea mult poate pentru acest nivel introductiv, iata cum as putea afla locul din memorie la
+care este stocata o variabila:
+
+
+#include <iostream>
+using namespace std;
+int main()
+{
+    int v=100;
+    cout << "Adresa la care este stocata valoarea variabilei este: " << &v << endl;
+    return 0;
+}
+
+
+Reprezentarea pozitiei in memoria RAM unde este stocata valoarea este in hexazecimal (0x....).
+
+Hexazecimal este tot o baza de numeratie (precum baza 2) - baza 16.
+
+Tipurile de date de care v-am povestit nu sunt singurele din c++. Iata care sunt acestea, pe cati biti
+sunt reprezentate si ce valori pot lua:
+
+char			1byte	-127..127 sau 0 .. 255
+unsigned char		1byte	0 .. 255
+signed char		1byte	-127 .. 127
+int			4bytes	-2147483648 .. 2147483647
+unsigned int		4bytes	0 .. 4294967295
+signed int		4bytes	-2147483648 .. 2147483647
+short int		2bytes	-32768 .. 32767
+unsigned short int	Range	0 .. 65535
+signed short int	Range	-32768 .. 32767
+long int		4bytes	-2147483648 .. 2147483647
+signed long int		4bytes	ca si long int
+unsigned long int	4bytes	0 .. 4294967295
+float			4bytes	+/- 3.4e +/- 38 (~7 digits)
+double			8bytes	+/- 1.7e +/- 308 (~15 digits)
+long double		8bytes	+/- 1.7e +/- 308 (~15 digits)
+wchar_t			2 sau 4 bytes	1 wide character
+
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+   cout << "Size of bool : " << sizeof(bool) << endl;
+   cout << "Size of char : " << sizeof(char) << endl;
+   cout << "Size of int : " << sizeof(int) << endl;
+   cout << "Size of short int : " << sizeof(short int) << endl;
+   cout << "Size of long int : " << sizeof(long int) << endl;
+   cout << "Size of long long int : " << sizeof(long long int) << endl;
+   cout << "Size of float : " << sizeof(float) << endl;
+   cout << "Size of double : " << sizeof(double) << endl;
+   cout << "Size of wchar_t : " << sizeof(wchar_t) << endl;
+
+   return 0;
+}

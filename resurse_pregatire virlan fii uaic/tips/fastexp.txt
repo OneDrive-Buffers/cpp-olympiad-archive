@@ -1,0 +1,13 @@
+long long fastexp(long long a,long long b, int modul){
+    if (b==0) return 1;
+    if (b%2==0)
+    {
+        long long j = fastexp(a, b/2, modul);
+        return j*j % modul;
+    }
+    else
+    {
+        long long j = fastexp(a, b/2, modul);
+        return ((j*j % modul)*a) % modul;
+    }
+}

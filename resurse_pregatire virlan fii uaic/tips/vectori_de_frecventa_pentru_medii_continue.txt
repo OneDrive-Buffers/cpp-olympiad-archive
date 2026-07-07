@@ -1,0 +1,10 @@
+Daca am mai multe intervale de elemente (dar de numere discrete - de exemplu cum este multimea N - dupa fiecare element pot zice care este urmatorul element), atunci pot marca intr-un vector de frecventa cand incepe un interval (prin incrementarea valorii
+existente in frecv cu 1 si respectiv decrementarea cu 1 a valorii unde se termina intervalul).
+
+Modificam apoi vectorul de frecventa astfel:
+for(int i=1; i<n; i++)
+   fr[i]+=fr[i-1];
+
+Acum in fiecare element fr[i] vom avea cate dintre intervale contin elementul i, deoarece am adunat 1 cand a inceput intervalul si am scazut 1 cand s-a terminat intervalul.
+
+Vezi pbinfo: #1222

@@ -1,0 +1,43 @@
+In mod normal, pentru a afla suma divizorilor unui numar am putea face ceva de genul:
+
+s = 0;
+for(int i=1; i<=n; i++)
+   if (n%i==0) s+=i;
+
+Chestia asta merge totusi in n pasi... Am putea face pana la n/2 si apoi sa adunam numarul n
+(pentru ca oricum nu o sa aiba divizori mai mari decat n/2):
+
+s = 0;
+for(int i=1; i<=n/2; i++)
+   if (n%i==0) s+=i;
+s+=n;
+
+
+Totusi, daca stam si ne gandim, in momentul in care am stabilit ca se divide cu 2 am putea
+sa il numaram si pe n/i; atunci cand stabilim ca se divide cu 3 inseamna ca si n/3 este divizor
+... si daca continuam asa atunci putem sa facem FOR-ul pana la radical din n... adica pana
+cand i*i<n ... (sau putem scrie  i < n/i). In cazul in care am gasit un divizor atunci,
+daca aceasta conditie este satisfacuta (i < n/i) atunci si n/i este divizor si putem sa il numaram.
+Codul devine:
+
+for(int i = 1; i <= sqrt(n) ; i++)
+{
+    if(n % i == 0)
+    {
+        sum=sum+ i;
+        if(nr/i>i) sum+=n/i;
+    }
+}
+
+Inca o optimizare: calculatorul face mai rapid un produs decat extrage un radical. 
+De asta putem sa facem FOR-ul asa:
+
+for(int i = 1; i*i <= n ; i++)
+{
+    if(n % i == 0)
+    {
+        sum = sum + i;
+        if(nr/i > i) sum += n/i;
+    }
+}
+

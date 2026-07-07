@@ -1,0 +1,108 @@
+Sa aflam numarul de divizori ai unui numar n:
+
+Pentru aceasta am putea sa mergem cu un for de la 1 pana la n si sa vedem 
+cate dintre valori vor divide pe n:
+
+int divizori = 0;
+for(int i=0; i<=n; i++)
+	if (n%i==0) divizori++;
+
+Numarul de pasi este in acest caz n.
+
+Am putea sa facem mai usor tinand cont ca atunci cand gasim un divizor
+mai mic decat radical din n atunci are si un divizor mai mare decat 
+radical din n (care inmultit cu primul ne va da chiar n). Totusi si asa
+vom face radical din n pasi.
+
+Algoritmul cel mai ok este bazat pe faptul ca numarul divizorilor este
+egal cu produsul dintre puterile numerelor prime in care se descompune
+numarul nostru incrementate cu 1.
+
+De exemplu, 12 = 2*2*3, atunci avem 2 la puterea a 2 si 3 la puterea 1. 
+Puterile sunt asar 2 si 1. Atunci numarul de divizori va fi (2+1)*(1+1)=6
+(acestia sunt 1,2,3,4,6,12).
+
+Algoritmul este destul de simplu:
+
+int NrDiv(int x) 
+{
+    int nrd=1,k=x,p=0;
+    while(k%2==0)
+        ++p,k/=2;
+    nrd=p+1;
+    for(int d=3;d*d<=k;d+=2)
+    {
+        p=0;
+        while(k%d==0)
+            ++p,k/=d;
+        nrd*=p+1;
+    }
+    if(k>1)
+        nrd*=2;
+    return nrd;
+}
+
+
+sau
+
+int NrDiv(int x) 
+{
+    int nrd=1,k=x,p=0;
+    while(!(k&1))
+        ++p,k>>=1;
+    nrd=p+1;
+    for(int d=3;d*d<=k;d+=2)
+    {
+        p=0;
+        while(k%d==0)
+            ++p,k/=d;
+        nrd*=p+1;
+    }
+    if(k>1)
+        nrd*=2;
+    return nrd;
+}
+
+
+
+
+
+
+
+    Cum se numara divizorii unui numar, daca am de numarat pentru foarte multe numere:
+    
+    Se descompune numarul in FACOTIR PRIMI, nu ma intereseaza efectiv factorii ci puterea la care sunt acestia.
+    De exemplu: 200 are urmatorii divizori:  1,2,4,5,8,10,20,25,40,50,100,200(in total 12)
+     
+    200 = 8*25 = 2*2*2 * 5*5. Puterile care ma intereseaza sunt 3 si 2. Numarul de divizori este in acest caz:
+    (3 + 1) * (2 + 1).
+    
+    daca ne gandim doar la divizorii lui 8, acestia sunt 1,2,4,8 (deci 4)
+    daca ne gandim doar la divizorii lui 9, acestia sunt 1,3,9 (deci 3)
+    
+    ca sa construiesc toti divizorii iau fiecare divizor a lui 8 cu fiecare divizor a lui 9 si fac un produs 
+    cartezian intre multimile de divizori, deci cardinalul sau este produsul cartinalelor. 
+    
+    2*2*2*3*3*3*3*5*5*7*7 are un numar de 4*5*3*3 divizori adica 180 divizori
+    
+    
+    
+    
+    
+    
+    
+/// pentru numere mari, nu trebuie sa ne speriem:    
+    
+Daca vreau sa aflu numarul de div ai unui numar, cel mai simplu e sa gasesc 
+divizorii primi si sa fac "schema cu puterile".
+
+Dar pana la cat trebuie sa verific divizorii primi ? Pana la radical din
+numar, si daca impart (de obicei asa fac ca sa gasesc numarul de div. primi)
+de fiecare data numarul la acesti divizori primi, voi obtine in final
+fie 1 (daca toti divizorii primi erau mai mici decat radical din numar),
+fie un numar prim care este mai mare decat radical si care inmultit cu
+un divizor mai mic decat radical mi-ar fi dat numarul.
+
+Deci testarea se faca pana la radical din numar, deci (iarasi) mi-ar fi de
+folos ca sa gasesc in prealabil numerele prime mai mici decat radical si 
+sa vad cu ele la ce putere trebuie sa le ridic pentru a gasi numarul.    
